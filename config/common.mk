@@ -132,6 +132,10 @@ $(foreach size,$(bootanimation_sizes), $(call check_and_set_bootanimation,$(size
 PRODUCT_COPY_FILES += vendor/rr/prebuilt/common/bootanimation/$(TARGET_BOOTANIMATION_NAME).zip:system/media/bootanimation.zip
 endif
 
+# Phonelocation!
+PRODUCT_COPY_FILES += \
+    vendor/rr/prebuilt/common/media/location/suda-phonelocation.dat:system/media/location/suda-phonelocation.dat
+
 # Required rr packages
 PRODUCT_PACKAGES += \
     BluetoothExt \
@@ -156,6 +160,7 @@ PRODUCT_PACKAGES += \
     AudioFX \
     LineageSettingsProvider \
     Eleven \
+    PhoneLocationProvider \
     ExactCalculator \
     Trebuchet \
     LockClock \
