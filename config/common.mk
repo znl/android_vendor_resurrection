@@ -163,6 +163,8 @@ PRODUCT_PACKAGES += \
     PhoneLocationProvider \
     ExactCalculator \
     Trebuchet \
+    GCam \
+    GoogleMarkup \
     LockClock \
     Updater \
     SnapdragonCamera2 \
@@ -185,7 +187,14 @@ PRODUCT_COPY_FILES += \
     vendor/rr/prebuilt/fonts/roadrage/road_rage.ttf:system/fonts/RoadRage-Regular.ttf \
     vendor/rr/prebuilt/fonts/snowstorm/snowstorm.ttf:system/fonts/Snowstorm-Regular.ttf \
     vendor/rr/prebuilt/fonts/vcrosd/vcr_osd_mono.ttf:system/fonts/ThemeableFont-Regular.ttf \
-    vendor/rr/prebuilt/fonts/googlesans/GoogleSans-Medium.ttf:system/fonts/GoogleSans-Medium.ttf
+    vendor/rr/prebuilt/fonts/googlesans/GoogleSans-Regular.ttf:system/fonts/GoogleSans-Medium.ttf \
+
+# Google Exclusives
+PRODUCT_COPY_FILES += \
+    vendor/rr/config/permissions/google_build.xml:system/etc/sysconfig/google_build.xml \
+    vendor/rr/config/permissions/nexus.xml:system/etc/sysconfig/nexus.xml \
+    vendor/rr/config/permissions/pixel_2017.xml:system/etc/sysconfig/pixel_2017.xml \
+    vendor/rr/config/permissions/pixel_2017_exclusive.xml:system/etc/sysconfig/pixel_2017_exclusive.xml
 
 # Berry styles
 PRODUCT_PACKAGES += \
