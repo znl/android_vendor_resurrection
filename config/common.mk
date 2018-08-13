@@ -28,7 +28,7 @@ endif
 
 ifneq ($(TARGET_BUILD_VARIANT),eng)
 # Enable ADB authentication
-PRODUCT_DEFAULT_PROPERTY_OVERRIDES += ro.adb.secure=1
+PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=1
 endif
 
 ifeq ($(BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE),)
@@ -46,6 +46,13 @@ PRODUCT_COPY_FILES += \
     vendor/rr/prebuilt/common/bin/blacklist:system/addon.d/blacklist \
     vendor/rr/prebuilt/common/bin/clean_cache.sh:system/bin/clean_cache.sh
 
+ifeq ($(AB_OTA_UPDATER),true)
+PRODUCT_COPY_FILES += \
+    vendor/rr/prebuilt/common/bin/backuptool_ab.sh:system/bin/backuptool_ab.sh \
+    vendor/rr/prebuilt/common/bin/backuptool_ab.functions:system/bin/backuptool_ab.functions \
+    vendor/rr/prebuilt/common/bin/backuptool_postinstall.sh:system/bin/backuptool_postinstall.sh
+endif
+
 # Backup Services whitelist
 PRODUCT_COPY_FILES += \
     vendor/rr/config/permissions/backup.xml:system/etc/sysconfig/backup.xml
@@ -53,10 +60,6 @@ PRODUCT_COPY_FILES += \
 # RR-specific broadcast actions whitelist
 PRODUCT_COPY_FILES += \
     vendor/rr/config/permissions/rr-sysconfig.xml:system/etc/sysconfig/rr-sysconfig.xml
-
-# Signature compatibility validation
-PRODUCT_COPY_FILES += \
-    vendor/rr/prebuilt/common/bin/otasigcheck.sh:install/bin/otasigcheck.sh
 
 # init.d support
 PRODUCT_COPY_FILES += \
@@ -138,7 +141,6 @@ PRODUCT_COPY_FILES += \
 
 # Required rr packages
 PRODUCT_PACKAGES += \
-    BluetoothExt \
     LineageParts \
     Development \
     Profiles
@@ -228,21 +230,16 @@ PRODUCT_PACKAGES += \
     bash \
     bzip2 \
     curl \
-    fsck.ntfs \
     gdbserver \
     htop \
     lib7z \
     libsepol \
     micro_bench \
-    mke2fs \
-    mkfs.ntfs \
-    mount.ntfs \
     oprofiled \
     pigz \
     powertop \
     sqlite3 \
     strace \
-    tune2fs \
     unrar \
     unzip \
     vim \
@@ -261,10 +258,14 @@ PRODUCT_PACKAGES += \
     libhealthd.lineage
 endif
 
-# exFAT tools
+# Filesystems tools
 PRODUCT_PACKAGES += \
     fsck.exfat \
-    mkfs.exfat
+    fsck.ntfs \
+    mke2fs \
+    mkfs.exfat \
+    mkfs.ntfs \
+    mount.ntfs
 
 # Openssh
 PRODUCT_PACKAGES += \

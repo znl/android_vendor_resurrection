@@ -7,6 +7,8 @@ export C=/tmp/backupdir
 export S=/system
 export V=8.1
 
+export ADDOND_VERSION=1
+
 # Scripts in /system/addon.d expect to find backuptool.functions in /tmp
 cp -f /tmp/install/bin/backuptool.functions /tmp
 
@@ -15,6 +17,18 @@ preserve_addon_d() {
   if [ -d /system/addon.d/ ]; then
     mkdir -p /tmp/addon.d/
     cp -a /system/addon.d/* /tmp/addon.d/
+
+    # Discard any scripts that aren't at least our version level
+    for f in /postinstall/tmp/addon.d/*sh; do
+      SCRIPT_VERSION=$(grep "^# ADDOND_VERSION=" $f | cut -d= -f2)
+      if [ -z "$SCRIPT_VERSION" ]; then
+        SCRIPT_VERSION=1
+      fi
+      if [ $SCRIPT_VERSION -lt $ADDOND_VERSION ]; then
+        rm $f
+      fi
+    done
+
     chmod 755 /tmp/addon.d/*.sh
   fi
 }
@@ -36,13 +50,13 @@ if [ ! -r /system/build.prop ]; then
 fi
 
 # Check whether RR is installed
-if [ ! grep -q "^ro.rr.version=$V.*" /system/etc/prop.default /system/build.prop ]; then
+if  ! grep -q "^ro.rr.version=6.*" /system/etc/prop.default /system/build.prop; then
   echo "Not backing up files as ResurrectionRemix is not installed"
   return 0
 fi
 
 # Check whether installed Android Version is 8.1*
-if ( ! grep -q "^ro.build.version.release=$V*" /system/build.prop ); then
+if ! grep -q "^ro.build.version.release=$V*" /system/build.prop; then
   echo "Not backing up files from incompatible Android Version!"
   return 0
 fi
