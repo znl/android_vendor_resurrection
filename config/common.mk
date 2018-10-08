@@ -230,16 +230,11 @@ PRODUCT_PACKAGES += \
     bash \
     bzip2 \
     curl \
-    gdbserver \
     htop \
     lib7z \
     libsepol \
-    micro_bench \
-    oprofiled \
     pigz \
     powertop \
-    sqlite3 \
-    strace \
     unrar \
     unzip \
     vim \
@@ -310,12 +305,14 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     media.recorder.show_manufacturer_and_model=true
 
 # These packages are excluded from user builds
-ifneq ($(TARGET_BUILD_VARIANT),user)
-PRODUCT_PACKAGES += \
+PRODUCT_PACKAGES_DEBUG += \
+    micro_bench \
     procmem \
-    procrank
+    procrank \
+    strace
 
 # Conditionally build in su
+ifneq ($(TARGET_BUILD_VARIANT),user)
 ifeq ($(WITH_SU),true)
 PRODUCT_PACKAGES += \
     su
@@ -324,7 +321,7 @@ endif
 
 DEVICE_PACKAGE_OVERLAYS += vendor/rr/overlay/common
 
-PRODUCT_VERSION = 6.1.0
+PRODUCT_VERSION = 6.2.1
 ifneq ($(RR_BUILDTYPE),)
 RR_VERSION := RR-O-v$(PRODUCT_VERSION)-$(shell date +%Y%m%d)-$(RR_BUILD)-$(RR_BUILDTYPE)
 else
